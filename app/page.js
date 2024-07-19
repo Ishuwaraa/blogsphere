@@ -12,9 +12,8 @@ export default function Home() {
           {Array(4).fill(0).map((_, index) => (
             <Link href={`/blogs/${index}`} key={index}>
               <BlogCard 
-                image={carImg} 
+                image={carImg}
                 title='Blog title' 
-                categories={['cat1', 'cat2', 'cat3', 'cat4', 'cat5', 'cat6', 'cat7', 'cat8']}
                 author='ishuwara'
                 description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, delectus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, delectus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, delectus.'  
               /> 

@@ -8,7 +8,9 @@ const SingleBlog = ({ params }) => {
         <div className="page">
             <div className="flex justify-center">
                 <div className="flex flex-col md:w-2/3">
-                    <Image src={carImg} alt='title' className=" w-full h-72 object-cover rounded-lg" />
+                    <div className="relative w-full h-72">
+                        <Image src={carImg} alt='title' fill className=" absolute object-cover rounded-lg" />
+                    </div>
 
                     <div className=" grid grid-cols-3 justify-between mt-10">
                         <p className=" col-span-2 text-lg font-bold">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia, cum</p>
@@ -17,14 +19,7 @@ const SingleBlog = ({ params }) => {
                             <p className="flex justify-end">written by : ishuwara</p>
                             <p className="flex justify-end text-sm mt-1">20/07/2024</p>
                         </div>
-                    </div>
-
-                    <p className=" mt-5">
-                        categories : 
-                        {Array(3).fill(0).map((_, index) => (
-                            <span key={index} className=" bg-gray-400 py-1 px-2 text-white rounded-xl mx-1">cat1</span>
-                        ))}
-                    </p>
+                    </div>                    
 
                     <p className="mt-10">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, architecto repellat obcaecati sed

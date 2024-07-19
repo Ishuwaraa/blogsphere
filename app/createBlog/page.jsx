@@ -1,33 +1,53 @@
 "use client"
 
-import { useState } from "react";
+import { CldUploadWidget, CldImage } from 'next-cloudinary'
+import Image from 'next/image';
+import { useState } from 'react';
+
 
 const CreateBlog = () => {
-    const [catArray, setCatArray] = useState([])
+    const [publicId, setPublicId] = useState(null)
+    const [imageUrl, setImageUrl] = useState('')
 
-    const addCategory = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
-
-        setCatArray(...e.target.value)
-        console.log(catArray)
+        console.log(imageUrl)
     }
 
     return ( 
         <div className="page">
             <div className="flex justify-center">
                 <div className="flex flex-col md:w-2/3">
-                    <form action="">
-                        <input type="text" placeholder="title" className="input mb-8"/>
+                    
+                <div className=' flex justify-center'>
+                    {publicId && <CldImage src={publicId} height={180} width={270} alt="image" className=" mb-5" />}
+                </div>
 
-                        <p>Categories: </p>
-                        <input type="checkbox" name="cat1" value='cat1' id="cat1" />
-                        <label htmlFor="cat1">Category 1</label>
-                        <input type="checkbox" name="cat2" value='cat2' id="cat2" />
-                        <label htmlFor="cat2">Category 1</label>
+                <CldUploadWidget          
+                    uploadPreset="icaziuoy"
+                    options={{
+                        sources: ['local', 'camera'],
+                        multiple: false,
+                        maxFiles: 1
+                    }}
+                    onSuccess={(result, widget) => {
+                        console.log(result) 
+
+                        if(result.event !== 'success') return
+
+                        setPublicId(result.info.public_id)
+                        setImageUrl(result.info.secure_url)
+                    }}>
+                    {({ open }) => <button onClick={() => open()} className="bg-secondary p-2 rounded-lg">Add image</button>}
+                </CldUploadWidget>
+
+                    <form action="" onSubmit={(e) => handleSubmit(e)} className=" mt-10">
+                        <input type="text" placeholder="title" className="input mb-8"/>                        
+                        <input type="text" readOnly value={imageUrl} className="input mb-8"/>                        
                         
                         <textarea name="" className="p-2 w-full border border-secondary rounded-lg" placeholder="turn your thoughts into words..." rows='10' style={{ resize: 'none'}}></textarea>
 
-                        <div className=" flex justify-between mt-10 px-10">
+                        <div className=" flex justify-between mt-10 md:px-10">
                             <button className=" border border-primary text-primary text-xl font-bold px-3 py-1 rounded-lg text-center">GO BACK</button>
                             <button className="btn bg-primary">POST BLOG</button>
                         </div>
