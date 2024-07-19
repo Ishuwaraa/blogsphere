@@ -9,10 +9,7 @@ const BlogCard = ({ image, title, description, categories, author }) => {
             </div>
             <div className="m-4">
                 <p className=" text-xl font-bold line-clamp-2 mb-2">{title}</p>                
-
-                <p className="line-clamp-2 mt-3">{description}</p>
-                
-                <p className="flex justify-end text-sm line-clamp-2 mt-3">written by : {author}</p>
+                <p className="line-clamp-2 mt-3">{description}</p>                                
             </div>
         </div>   
     )

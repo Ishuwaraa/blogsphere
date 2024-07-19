@@ -13,8 +13,7 @@ const Profile = () => {
                         <Link key={index} href={`/profile/blogEdit/${index}`}>
                             <BlogCard 
                                 image={carImg} 
-                                title='Blog title' 
-                                author='ishuwara'
+                                title='Blog title'
                                 description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, delectus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, delectus.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, delectus.'  
                             /> 
                         </Link>
