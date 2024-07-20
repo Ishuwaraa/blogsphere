@@ -1,5 +1,6 @@
 import connectToDb from '@/app/lib/dbConnect';
 import { Blog, User } from '@/app/lib/models';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export const GET = async (req) => {
@@ -27,6 +28,8 @@ export const POST = async (req) => {
             imageUrl: body.imageUrl,
             user: body.user
         })
+        revalidatePath('/')
+        revalidatePath('/profile')
 
         return NextResponse.json(blog, { status: 201 })
     } catch (err) {        
