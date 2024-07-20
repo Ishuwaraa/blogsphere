@@ -4,15 +4,20 @@ import Image from "next/image";
 import { useState } from "react";
 import logo from '../../public/assets/logo1.png'
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+    const router = useRouter()
+    const { status } = useSession()
+
     const [burgerIcon, setBurgerIcon] = useState(true);
     const [menuVisible, setMenuVisible] = useState(false);
 
     const toggleBurgerIcon = () => {
         setBurgerIcon(!burgerIcon);
         setMenuVisible(!menuVisible);
-    } 
+    }     
 
     return ( 
         <nav className={` flex items-center justify-between border font-roboto fixed top-0 h-14 bg-white w-full z-50 ${!menuVisible && 'border-b-1 border-b-gray-200'}`}>
@@ -21,10 +26,9 @@ const Navbar = () => {
             </div>
 
             <ul className=' hidden md:flex flex-grow justify-evenly mx-16 lg:px-32 text-cusGray'>
-            <li><Link href="/" className=' hover:text-primary'>Blogs</Link></li>
-            <li><Link href="/createBlog" className=' hover:text-primary'>Write a Blog</Link></li>
-            <li><Link href="/profile" className=' hover:text-primary'>Profile</Link></li>
-            {/* {auth?.accessToken && <li><a href="/profile" className=' hover:text-primary'>Profile</a></li>} */}
+                <li><Link href="/" className=' hover:text-primary'>Blogs</Link></li>
+                <li><Link href="/createBlog" className=' hover:text-primary'>Write a Blog</Link></li>
+                {status === 'authenticated' && <li><Link href="/profile" className=' hover:text-primary'>Profile</Link></li>}
             </ul>
 
             <div className=' mx-10 block md:hidden' onClick={toggleBurgerIcon}>
@@ -40,29 +44,30 @@ const Navbar = () => {
             </div>       
 
             <div className=' mx-10 hidden md:block'>
-                <button className='btn bg-primary'>Log in</button>
-                {/* {auth?.accessToken ? (
-                    <button className='btn bg-primary' onClick={logout}>Log out</button>
+                {status === 'loading' ? (
+                    <div>loading...</div>
+                ) : status === 'authenticated'? (
+                    <button className='btn bg-primary' onClick={() => router.push('/api/auth/signout')}>Log out</button>
                 ) : (
-                    <button className='btn bg-primary' onClick={() => navigate('/login')}>Log in</button>
-                )} */}
+                    <button className='btn bg-primary' onClick={() => router.push('/api/auth/signin')}>Log in</button>
+                )}
             </div>
 
             {menuVisible && (
             <div className={`absolute top-14 left-0 w-full bg-white border border-b-gray-200  pb-4 md:hidden transition-all duration-500 ease-in-out transform ${menuVisible ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                 <ul className='flex flex-col items-center space-y-4 py-4 text-cusGray'>
-                <li><Link href="/" className='block w-full text-center'>Blogs</Link></li>
-                <li><Link href="/createBlog" className='block w-full text-center'>Write a Blog</Link></li>
-                <li><Link href="/profile" className='block w-full text-center'>Profile</Link></li>
-                {/* {auth?.accessToken && <li><a href="/profile" className='block w-full text-center'>Profile</a></li>} */}
+                    <li><Link href="/" className='block w-full text-center'>Blogs</Link></li>
+                    <li><Link href="/createBlog" className='block w-full text-center'>Write a Blog</Link></li>
+                    <li><Link href="/profile" className='block w-full text-center'>Profile</Link></li>
                 </ul>
                 <div className=' flex justify-center'>
-                    <button className='btn bg-primary'>Log out</button>
-                    {/* {auth?.accessToken ? (
-                        <button className='btn bg-primary' onClick={logout}>Log out</button>
+                    {status === 'loading' ? (
+                        <div>loading...</div>
+                    ) : status === 'authenticated'? (
+                        <button className='btn bg-primary' onClick={() => router.push('/api/auth/signout')}>Log out</button>
                     ) : (
-                        <button className='btn bg-primary' onClick={() => navigate('/login')}>Log in</button>
-                    )} */}
+                        <button className='btn bg-primary' onClick={() => router.push('/api/auth/signin')}>Log in</button>
+                    )}
                 </div>
             </div>
             )}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BlogCard from "../components/BlogCard";
+import ProfileData from "../components/ProfileData";
 
 const Profile = async () => {
 
@@ -8,6 +9,8 @@ const Profile = async () => {
 
     return ( 
         <div className="page">
+            <ProfileData />
+
             <p className="text-2xl md:text-4xl text-primary font-bold mb-10">My Blogs</p>
 
             <div className="flex justify-center">
