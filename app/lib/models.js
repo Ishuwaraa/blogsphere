@@ -28,10 +28,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    password: {
+    imageUrl: {
         type: String,
-        required: true
-    }
+    },
+    blogs: [String],
+    // password: {
+    //     type: String,
+    //     required: true
+    // }
 }, { timestamps: true })
 
 export const Blog = mongoose.models.Blog || mongoose.model('Blog', blogSchema)

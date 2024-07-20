@@ -1,22 +1,35 @@
 import Link from "next/link";
 import BlogCard from "../components/BlogCard";
-import ProfileData from "../components/ProfileData";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import Image from "next/image";
 
 const Profile = async () => {
+    const session = await getServerSession(authOptions)
 
-    const res = await fetch('http://localhost:3000/api/users', { cache: 'no-store' })
-    const blogs = await res.json()
+    const res = await fetch(`http://localhost:3000/api/users/${session.user.id}`, { cache: 'no-store' })
+    const data = await res.json()
 
     return ( 
         <div className="page">
-            <ProfileData />
+            {/* <ProfileData /> */}
+            <div className=" flex justify-center items-center gap-5 md:gap-10 mb-10">            
+                <div className="relative w-24 h-24 md:w-36 md:h-36 ">
+                    <Image src={data.user.imageUrl} alt='title' fill className=" absolute object-cover rounded-full" />
+                </div>
+
+                <div>
+                    <p>{data.user.name}</p>
+                    <p>{data.user.email}</p>
+                </div>
+            </div>
 
             <p className="text-2xl md:text-4xl text-primary font-bold mb-10">My Blogs</p>
 
             <div className="flex justify-center">
-                {blogs.length > 0 ? (
+                {data.blog.length > 0 ? (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {blogs.map((blog, index) => (
+                        {data.blog.map((blog, index) => (
                             <Link key={index} href={`/profile/blogEdit/${blog._id}`}>
                                 <BlogCard 
                                     image={blog.imageUrl} 

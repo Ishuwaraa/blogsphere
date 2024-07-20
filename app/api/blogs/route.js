@@ -22,11 +22,17 @@ export const POST = async (req) => {
     try{
         await connectToDb()
 
-        const blog = Blog.create({
+        const blog = await Blog.create({
             title: body.title,
             description: body.description,
             imageUrl: body.imageUrl,
             user: body.user
+        })
+
+        await User.findByIdAndUpdate(body.user, {
+            $push: {
+                blogs: blog._id
+            }
         })
         revalidatePath('/')
         revalidatePath('/profile')

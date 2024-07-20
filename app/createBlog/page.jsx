@@ -4,10 +4,12 @@ import { CldUploadWidget, CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 
 const CreateBlog = () => {
     const router = useRouter()
+    const { data } = useSession()
 
     const [publicId, setPublicId] = useState(null)
     const [imageUrl, setImageUrl] = useState('')
@@ -16,11 +18,11 @@ const CreateBlog = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const data = {
+        const formData = {
             title,
             description,
             imageUrl,
-            user: '669a90a5d7e8ab39addbee05'
+            user: data.user.id
         }
         
         if(!publicId) {
@@ -32,7 +34,7 @@ const CreateBlog = () => {
             await fetch('http://localhost:3000/api/blogs', {
                 method: 'POST',
                 headers: {"Content-Type": "application/json" },
-                body: JSON.stringify(data)
+                body: JSON.stringify(formData)
             })
 
             router.replace('/')

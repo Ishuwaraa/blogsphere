@@ -14,6 +14,7 @@ const ProfileData = () => {
 
             <div>
                 <p>{session.user.name}</p>
+                {/* <p>{session.user?.id}</p> */}
                 <p>{session.user.email}</p>
             </div>
         </div>
