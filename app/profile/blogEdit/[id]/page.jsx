@@ -4,9 +4,11 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const EditBlog = ({ params }) => {
     const router = useRouter()
+    const { status, data : session } = useSession()
 
     const [imageUrl, setImageUrl] = useState(null)
     const [title, setTitle] = useState('')
@@ -56,8 +58,24 @@ const EditBlog = ({ params }) => {
         setDescription(blog.blog.description)
     }
     useEffect(() => {
-        fetchData()
-    }, [])
+        const checkId = async () => {
+            if(status === 'loading') {
+                return
+            }
+
+            const res = await fetch(`http://localhost:3000/api/users/blog/${session.user.id}`)
+            const data = await res.json()
+
+            if(data.blogs.find((blogId) => blogId === id)) {
+                fetchData()
+            } else {
+                router.replace('/')
+            }
+            
+        }
+
+        checkId()
+    }, [status])
 
     return (         
         <div className="page">

@@ -47,7 +47,11 @@ export const DELETE = async (req, { params } ) => {
     try{
         await connectToDb()
 
-        await Blog.findByIdAndDelete(id)
+        const blog = await Blog.findByIdAndDelete(id)
+        await User.findByIdAndUpdate(blog.user, {
+            $pull: { blogs: id }
+        })
+        
         revalidatePath('/profile')  //fetch data again after deletion
 
         return NextResponse.json({ msg: 'Blog deleted successfully' }, { status: 200 })
